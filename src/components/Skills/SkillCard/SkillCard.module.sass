@@ -8,31 +8,13 @@
     100%
         background-position: 0% 0%
 
-@keyframes background-position-radial
-    0%
-        background-position: 0% 0%
-    25%
-        background-position: 0% 100%
-
-    50%
-        background-position: 100% 100%
-
-    75%
-        background-position: 100% 0%
-
-    100%
-        background-position: 0% 0%
-
 %side
     @include zero-hundred
     position: absolute
     z-index: 3
-    display: flex
-    flex-direction: column
-    align-items: center
-    border-radius: var(--border-radius-normal)
     backface-visibility: hidden
     overflow: hidden
+    border-radius: var(--border-radius-normal)
     transition: transform .6s ease-in-out
 
 .card
@@ -43,132 +25,141 @@
 
     &__front
         @extend %side
-        transform: rotateY(0deg)
-        justify-content: center
+        @include flex-center
+        flex-direction: column
         &::before
             @include before-after
             @include zero-hundred
-            border-radius: var(--border-radius-normal)
             z-index: 1
+            border-radius: var(--border-radius-normal)
             background-size: 400%
             animation: background-position 10s ease infinite
-
         &::after
             @include before-after
-            top: 6px
-            left: 6px
-            bottom: 6px
-            right: 6px
+            z-index: 2
+            top: var(--card-border-size)
+            left: var(--card-border-size)
+            bottom: var(--card-border-size)
+            right: var(--card-border-size)
             border-radius: calc(var(--border-radius-normal) * 3/5)
             background-color: var(--background-color-2)
             mask-image: url('../../../media/romboid_small.svg')
-            mask-size: 61px
+            mask-size: var(--card-mask-size)
             mask-position: center
-            z-index: 2
 
-        &--first
+        &--frontend
             &::before
-                @include gradient-middle(-45deg, var(--color-main-1), var(--grey-medium))
-        &--second
+                background-image: linear-gradient(-45deg, var(--grey-medium), var(--color-main-1), var(--grey-medium))
+
+        &--backend
             &::before
-                @include gradient-middle(-45deg, var(--color-main-2), var(--grey-medium))
-        &--third
+                background-image: linear-gradient(-45deg, var(--grey-medium), var(--color-main-2), var(--grey-medium))
+
+        &--softskills
             &::before
-                @include gradient-middle(-45deg, var(--color-main-3), var(--grey-medium))
+                background-image: linear-gradient(-45deg, var(--grey-medium), var(--color-main-3), var(--grey-medium))
 
     &__back
         @extend %side
+        display: block
         transform: rotateY(180deg)
-        justify-content: space-between
         &::before
             @include before-after
             @include zero-hundred
-            border-radius: var(--border-radius-normal)
             z-index: -2
+            border-radius: var(--border-radius-normal)
+            background-size: 80%
+            background-position: 50% 25%
 
-        &::after
-            @include before-after
-            top: 18%
-            left: 6px
-            bottom: 6px
-            right: 6px
-            border-radius: 0 0 calc(var(--border-radius-normal) * 3/5) calc(var(--border-radius-normal) * 3/5)
-            background-color: var(--background-color-2)
-            z-index: -1
-            clip-path: polygon(0 12%, 100% 0, 100% 100%, 0% 100%)
-        &--first
+        &--frontend
             &::before
-                background-color: var(--color-main-1)
-        &--second
-            &::before
-                background-color: var(--color-main-2)
-        &--third
-            &::before
-                background-color: var(--color-main-3)
+                background-image: url('../../../media/bg1.svg'), linear-gradient(var(--color-main-1), var(--color-main-1))
 
-        // &--first
-        // &--second
-        // &--third
+        &--backend
+            &::before
+                background-image: url('../../../media/bg2.svg'), linear-gradient(var(--color-main-2), var(--color-main-2))
+
+        &--softskills
+            &::before
+                background-image: url('../../../media/bg3.svg'), linear-gradient(var(--color-main-3), var(--color-main-3))
+
     &:hover &__front
         transform: rotateY(-180deg)
 
     &:hover &__back
         transform: rotateY(0deg)
 
+    &__skew_wrapper
+        position: absolute
+        display: flex
+        flex-direction: column
+        overflow: hidden
+        top: var(--card-border-size)
+        left: var(--card-border-size)
+        bottom: var(--card-border-size)
+        right: var(--card-border-size)
+        border-radius: calc(var(--border-radius-normal) * 3/5)
+
     &__title
-        display: block
-        position: relative
-        padding: 15px 40px
+        padding: .5em 1em
         z-index: 4
         font-size: var(--font-size-heading-2)
         text-transform: uppercase
         background-color: var(--background-color-2)
         border-radius: var(--border-radius-big)
 
-        &--first
+        &--frontend
             color: var(--color-main-1)
-        &--second
+
+        &--backend
             color: var(--color-main-2)
-        &--third
+
+        &--softskills
             color: var(--color-main-3)
 
         &--back
             border-radius: 0
-            margin: 11% 0 0 0
-            transform: skewY(-7.5deg)
-            width: calc(100% - 12px)
+            margin: 5vh 0 var(--card-border-size) 0
+            padding: .5em 0
+            transform: skewY(var(--skew))
 
-    &__icon
-        // width: calc(100% - 12px)
-        // height: 10%
-        height: 5vh
-        width: 5vh
-        position: relative
+    &__image
+        position: absolute
+        bottom: 2vh
+        right: 2vh
         z-index: 4
-        align-self: end
-        margin: 0 16px 16px 0
-        &_image
-            &--first
-                fill: var(--color-main-1)
-            &--second
-                fill: var(--color-main-2)
-            &--third
-                fill: var(--color-main-3)
 
     &__skills
-        color: var(--grey-light)
-        padding: 0
-        list-style-type: none
-        margin-bottom: -5vh
-        display: flex
+        @include flex-center
         flex-direction: column
-        align-items: center
+        flex-grow: 1
+        position: relative
+        padding: 0
+        color: var(--grey-light)
+        list-style-type: none
+
+        &::before
+            @include before-after
+            @include zero-hundred
+            z-index: -1
+            height: 120%
+            background-color: var(--background-color-2)
+            transform: skewY(var(--skew))
 
     &__skill
         font-size: var(--font-size-normal)
         text-transform: uppercase
-        line-height: 1.6em
-        display: inline-block
-        padding: 0 10px 0 10px
+        line-height: 1.8em
+        padding: 0 1vh 0 1vh
         &:not(:last-child)
-            border-bottom: 2px solid var(--grey-light)
+            border-width: 2px
+            border-bottom-style: solid
+
+        &--frontend
+            border-color: var(--color-main-1)
+
+        &--backend
+            border-color: var(--color-main-2)
+
+        &--softskills
+            border-color: var(--color-main-3)
