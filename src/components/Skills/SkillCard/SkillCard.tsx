@@ -1,50 +1,40 @@
-import * as React from "react";
+import styles from './SkillCard.module.sass';
 
-import bemCssModules from "bem-css-modules";
-
-import skillCardStyles from "./SkillCard.module.sass";
-
-import { ReactComponent as CardCrystal } from "../../../media/card_crystal.svg";
+import { ReactComponent as CardCrystal } from '../../../media/card_crystal.svg';
 
 interface MyProps {
-  data: { title: string; skills: string[] };
-  children: JSX.Element;
-}
+    data: { category: string, skills: string[] },
+    children: JSX.Element
+};
 
-const SkillCard: React.FC<MyProps> = (props: MyProps) => {
-  const styles = bemCssModules(skillCardStyles);
+const SkillCard: React.FC<MyProps> = ({data, children}) => {
 
-  const position: Record<MyProps["data"]["title"], true> = {
-    [props.data.title]: true,
-  };
+    // const position: Record<MyProps['data']['title'], true> = { [props.data.category]: true };
+    // const position: Partial<Record<MyProps['data']['title'], boolean>> = {};
+    // position[props.data.category] = true;
 
-  // const position: Partial<Record<MyProps['data']['title'], boolean>> = {};
-  // position[props.data.title] = true;
+    return (
+        <div className={styles.card}>
 
-  return (
-    <div className={styles()}>
-      <div className={styles("front", position)}>
-        <CardCrystal className={styles("crystal")} />
-        <h2 className={styles("title", position)}>{props.data.title}</h2>
-      </div>
+            <div className={styles[`frontside_${data.category}`]}>
+                <CardCrystal className={styles.crystal} />
+                <h2 className={styles[`title_${data.category}`]}>{data.category}</h2>
+            </div>
 
-      <div className={styles("back", position)}>
-        <div className={styles("skew_wrapper")}>
-          <h2 className={styles("title", { ...position, back: true })}>
-            {props.data.title}
-          </h2>
-          <ul className={styles("skills")}>
-            {props.data.skills.map((skill, idx) => (
-              <li className={styles("skill", position)} key={idx}>
-                {skill}
-              </li>
-            ))}
-          </ul>
+            <div className={styles[`backside_${data.category}`]}>
+                <div className={styles.skew_wrapper}>
+                    <h2 className={`${styles[`title_${data.category}`]} ${styles.title_skewed}`}>{data.category}</h2>
+                    <ul className={styles.skills}>
+                        {data.skills.map((skill, idx) => <li className={styles[`skill_${data.category}`]} key={idx}>{skill}</li>)}
+                    </ul>
+                </div>
+                <div className={styles.icon}>
+                    {children}
+                </div>
+            </div>
+
         </div>
-        <div className={styles("image")}>{props.children}</div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default SkillCard;
