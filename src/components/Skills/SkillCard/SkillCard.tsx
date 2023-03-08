@@ -14,7 +14,7 @@ const SkillCard: React.FC<MyProps> = ({data, children}) => {
     // position[props.data.category] = true;
 
     return (
-        <div className={styles.card}>
+        <article className={styles.card}>
 
             <div className={styles[`frontside_${data.category}`]}>
                 <CardCrystal className={styles.crystal} />
@@ -33,7 +33,7 @@ const SkillCard: React.FC<MyProps> = ({data, children}) => {
                 </div>
             </div>
 
-        </div>
+        </article>
     );
 };
 
