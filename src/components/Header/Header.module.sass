@@ -1,12 +1,154 @@
+@import '../../sass/mixins'
+
+@keyframes right-slide
+    100%
+        transform: translateX(0%)
+
+@keyframes bottom-slide
+    100%
+        transform: translateY(0%)
+
+@keyframes zoom-out
+    100%
+        transform: translateX(34%) scale(1)
+
+@keyframes zoom-out-mobile
+    100%
+        transform: translateY(36vh) scale(1)
+
 .header
     height: 100vh
     position: relative
+    @include flex-center
 
 .crystal
-    height: 50vh
-    width: 50vh
+    will-change: filter, transform
     position: absolute
     top: 50%
     left: 25%
+    height: 70vh
+    width: 70vh
     transform: translate(-50%, -50%)
     z-index: 999
+    overflow: visible
+    @include mobile-and-small
+        top: 40%
+        left: 60%
+
+.hello
+    will-change: transform
+    transform: scale(1.8)
+    color: #fefefe
+    display: grid
+    grid-template-columns: min-content min-content
+    grid-template-rows: min-content min-content min-content
+    align-items: end
+    justify-items: start
+    animation: zoom-out .8s 2.3s cubic-bezier(0.65, 0, 0.35, 1) both
+    @include mobile-and-small
+        transform: scale(1.2)
+        animation: zoom-out-mobile .8s 2.3s cubic-bezier(0.65, 0, 0.35, 1) forwards
+
+// .hello_v2
+//     will-change: transform
+//     position: absolute
+//     bottom: 50%
+//     right: 50%
+//     color: #fefefe
+//     // display: grid
+//     // grid-template-columns: min-content min-content
+//     // grid-template-rows: min-content min-content min-content
+//     // align-items: end
+//     // justify-items: start
+
+.overflow_wrapper
+    height: min-content
+    position: relative
+    overflow: hidden
+    &:nth-child(1)
+        margin-bottom: -2.4vw
+        @include mobile-and-small
+            margin-bottom: -3vw
+        & .line
+            font-size: calc(0.7 * var(--font-size-heading-1))
+            animation: bottom-slide .6s .3s cubic-bezier(0.65, 0, 0.35, 1) forwards
+    &:nth-child(2)
+        & .line
+            font-size: calc(0.7 * var(--font-size-heading-1))
+            line-height: .9em
+            animation: bottom-slide .6s .6s cubic-bezier(0.65, 0, 0.35, 1) forwards
+    &:nth-child(3)
+        grid-row: 1 / 3
+        grid-column: 2
+    &:nth-child(4)
+        grid-column: span 2
+        & .line
+            font-size: calc(0.84 * var(--font-size-heading-1))
+            letter-spacing: .18em
+            font-weight: 400
+            animation: bottom-slide .8s 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards
+
+.line
+    transform: translateY(120%)
+    display: block
+    font-size: var(--font-size-heading-1)
+    font-weight: 400
+    text-transform: uppercase
+
+.color
+    // transform: translateX(100%)
+    display: flex
+    margin: 0
+    font-size: calc(2.8 * var(--font-size-heading-1))
+    font-weight: 700
+    line-height: .8em
+    letter-spacing: 2rem
+    text-transform: uppercase
+    background-clip: text
+    background-attachment: fixed
+    // background-image: linear-gradient(135deg, var(--color-gradient-1), var(--color-gradient-2), var(--color-gradient-3))
+    color: transparent
+    justify-self: center
+    // animation: right-slide .8s .9s cubic-bezier(0, 0.55, 0.45, 1) forwards
+    & span
+        // color: white
+        background-image: linear-gradient(135deg, var(--color-gradient-1), var(--color-gradient-2), var(--color-gradient-3) 94%)
+        background-size: 400%
+        background-clip: text
+        transform: translateX(90vh)
+        animation: right-slide .8s cubic-bezier(0, 0.55, 0.45, 1) forwards
+        @for $i from 1 to 7
+            &:nth-child(#{$i})
+                background-position: $i * 16%
+                animation-delay: .9s + ($i - 1) * .1s
+
+// .color_v2
+//     display: block
+//     margin: 0
+//     font-size: calc(2.8 * var(--font-size-heading-1))
+//     font-weight: 700
+//     line-height: .8em
+//     letter-spacing: .06em
+//     text-transform: uppercase
+//     background-clip: text
+//     background-attachment: fixed
+//     background-image: linear-gradient(135deg, var(--color-gradient-1), var(--color-gradient-2), var(--color-gradient-3))
+//     color: transparent
+//     animation: right-slide .8s .9s cubic-bezier(0, 0.55, 0.45, 1) forwards
+
+// .tes
+//     position: absolute
+//     top: 50%
+//     left: 50%
+//     width: 40vw
+//     height: 40vh
+
+// .test
+//     position: absolute
+//     top: 50%
+//     left: 50%
+//     font-size: calc(2.8 * var(--font-size-heading-1))
+//     background-image: linear-gradient(135deg, var(--color-gradient-1), var(--color-gradient-2), var(--color-gradient-3))
+//     background-attachment: fixed
+//     background-clip: text
+//     color: transparent

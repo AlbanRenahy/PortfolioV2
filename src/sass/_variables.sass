@@ -1,29 +1,48 @@
+@import './mixins'
+
 .App
     --background-color-1: #1d2020
     --background-color-2: #292c30
     --background-color-3: #2C363F
     // --background-color-2: # 1f242a
     // --background-color-2: # 282d33
+
     // --background-color-1: #202020
     // --background-color-2: #333331
-    --color-main-1: #83ce63
-    --color-main-2: #4fd397
-    --color-main-3: #21ced1
 
-    // --color-main-1: #94F580
-    // --color-main-2: #51DA9F
-    // --color-main-3: #0DBFBD
-    // --color-main-5: #c7779e
-    // --color-main-4: #e2fb53
+    --color-main-1: #85d164
+    --color-main-2: #4fd397
+    --color-main-3: #19cfcf
+
+    // --color-main-1: #A9F46E
+    // --color-main-2: #70e684
+    // --color-main-3: #29b5c5
+
+    --color-gradient-1: #A9F46E
+    --color-gradient-2: #2AD5A1
+    --color-gradient-3: #8A78D5
+    // --color-gradient-3: #927ce9
+
+    // --color-gradient-1: #d5f145
+    // --color-gradient-2: #35deb9
+    // --color-gradient-3: #ae6ce1
+
     --grey-light: #ddd
     --grey-medium: #888888
     --grey-dark: #555
-    // #171A21, #2C363F, #2D2D2A, #4C4C47, #343434, #342E37, #4C5760, #494947, #617073, #706F6F, #8F8389, 
+    // #171A21, #2C363F, #2D2D2A, #4C4C47, #343434, #342E37, #4C5760, #414140, #494947, #617073, #706F6F, #8F8389, 
+
     --border-radius-normal: 1vh
     --border-radius-big: 3vh
 
-    --font-size-heading-2: 1.8vw
+    --font-size-heading-1: 3.3vw
+    --font-size-heading-2: 1.7vw
+    --font-size-bigger: 1.6vw
     --font-size-normal: 1.2vw
+
+    --letter-spacing-big: .2em
+    --letter-spacing-normal: .1em
+    --letter-spacing-small: .05em
 
     --card-mask-size: 62px
     --card-border-size: 6px
@@ -33,8 +52,16 @@
     //# 1f242a
     //# 282d33
     //# 292c30
+
     // &--light
     //--color-main-1: # FF8C6B
     //--color-main-2: # E37387 
     //--color-main-3: # B36997 
+
     //--background-color-1: # 31292e
+
+    @include mobile-and-small
+        --font-size-heading-1: 5.4vw
+        --font-size-heading-2: 6.8vw
+        --font-size-bigger: 7.6vw
+        --font-size-normal: 4.2vw

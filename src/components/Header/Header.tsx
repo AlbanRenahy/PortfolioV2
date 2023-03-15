@@ -3,31 +3,89 @@ import gsap from 'gsap';
 
 import styles from './Header.module.sass';
 
-import { ReactComponent as Crystal } from '../../media/phold_crystal.svg';
+import { ReactComponent as Crystal } from '../../media/main_crystal.svg';
 
 const Header: React.FC = (props) => {
 
-    const crystalWrapper: React.MutableRefObject<null> = useRef(null);
-    const tl = gsap.timeline({ defaults: { ease: 'back.out(1.7)', transformOrigin: 'center' } });
+    const crystalRef: React.MutableRefObject<null | SVGSVGElement> = useRef(null);
+
+    const crystalTL = gsap.timeline({ defaults: { ease: 'Expo.easeOut', transformOrigin: 'center' } });
+
+    const [tls1, tls2, tls3, tls4, tls5] = Array.from(Array(5), () => (gsap.timeline({ defaults: { ease: 'none', transformOrigin: 'center' }, repeat: -1 })))
 
     useEffect(() => {
-        const extru = crystalWrapper.current;
-        gsap.set(extru, { autoAlpha: 0 });
-        tl.fromTo(extru, { scale: 3, filter: ' grayscale(0) blur(10px)' }, { ease: 'bounce.out', duration: 1.6, delay: .5, scale: 1, filter: 'grayscale(0) blur(0px)', autoAlpha: 1 })
-            .to(extru, { duration: 1.4, ease: 'bounce.out', delay: -.6, filter: 'grayscale(1) blur(0px)' })
-            .to(extru, { duration: 0.9, filter: 'grayscale(0)' })
-            .to(extru, { duration: 0.4, filter: 'grayscale(.7)' })
-            .to(extru, { duration: 0.6, filter: 'grayscale(0)' })
-            .to(extru, { duration: 0.4, filter: 'grayscale(.3)' })
-            .to(extru, { duration: 0.9, scale: 1, filter: 'grayscale(0)' })
-            .to(extru, { duration: 0.7, scale: 1.2, filter: '' })
 
-    }, [tl])
+        const crystal = crystalRef.current;
+
+        if (crystal) {
+            const elementGetter = gsap.utils.selector(crystal);
+
+            const [lowerShard, lowerLeftShard, leftShard, tinyShard, mainShard] = ['lower', 'lower-left', 'middle-left', 'middle-tiny', 'main'].map((element) => (elementGetter(`[id="main_crystal_svg__${element}"]`)));
+
+            gsap.set(crystal, { autoAlpha: 0 });
+
+            crystalTL.fromTo(crystal, { scale: 3, filter: ' grayscale(0) blur(10px)' }, { ease: 'bounce.out', duration: 1.6, scale: 1, delay: 3.1, filter: 'grayscale(0) blur(0px)', autoAlpha: 1 })
+                .to(lowerShard, { duration: .4, delay: -.2, yPercent: '25', rotateZ: '-3deg' })
+                .to(lowerLeftShard, { duration: .4, delay: -.4, yPercent: '20', xPercent: '-30', rotateZ: '-5deg' })
+                .to(leftShard, { duration: .4, delay: -.4, yPercent: '-30', xPercent: '-95', rotateZ: '-18deg' })
+                .to(tinyShard, { duration: .4, delay: -.4, xPercent: '-195', rotateZ: '-5deg' })
+                .to([crystal, '#alban'], { ease: 'Expo.easeOut', duration: 1, delay: -.5, filter: 'grayscale(1)' })
+                .to([crystal, '#alban'], { ease: 'bounce.out', duration: 2, delay: .6, filter: 'grayscale(0)' })
+                .to(crystal, { duration: .1, filter: 'none' })
+
+            tls1.delay(crystalTL.duration() - .8)
+                .to(mainShard, { duration: 2, xPercent: '-5', yPercent: '-4', rotateZ: '-2deg' })
+                .to(mainShard, { duration: 2, xPercent: '0', yPercent: '-6', rotateZ: '0deg' })
+                .to(mainShard, { duration: 2, xPercent: '5', yPercent: '-2', rotateZ: '2deg' })
+                .to(mainShard, { duration: 2, xPercent: '0', yPercent: '0', rotateZ: '0deg' })
+
+            tls2.delay(crystalTL.duration() - .4)
+                .to(lowerShard, { duration: 2, yPercent: '35', rotateZ: '2deg' })
+                .to(lowerShard, { duration: 2, yPercent: '40', rotateZ: '-4deg' })
+                .to(lowerShard, { duration: 2, yPercent: '30', rotateZ: '3deg' })
+                .to(lowerShard, { duration: 2, yPercent: '25', rotateZ: '-3deg' })
+
+            tls3.delay(crystalTL.duration() - .3)
+                .to(leftShard, { duration: 2.4, yPercent: '-40', xPercent: '-125', rotateZ: '-26deg' })
+                .to(leftShard, { duration: 2.4, yPercent: '-45', xPercent: '-100', rotateZ: '-16deg' })
+                .to(leftShard, { duration: 2.4, yPercent: '-40', xPercent: '-84', rotateZ: '-6deg' })
+                .to(leftShard, { duration: 2.4, yPercent: '-30', xPercent: '-95', rotateZ: '-18deg' })
+
+            tls4.delay(crystalTL.duration() - .5)
+                .to(tinyShard, { duration: 1.2, xPercent: '-225', yPercent: '-30', rotateZ: '-5deg' })
+                .to(tinyShard, { duration: 1.2, xPercent: '-175', yPercent: '-4', rotateZ: '0deg' })
+                .to(tinyShard, { duration: 1.2, xPercent: '-155', yPercent: '40', rotateZ: '5deg' })
+                .to(tinyShard, { duration: 1.4, xPercent: '-175', yPercent: '60', rotateZ: '5deg' })
+                .to(tinyShard, { duration: 1.2, xPercent: '-195', yPercent: '0', rotateZ: '-5deg' })
+
+            tls5.delay(crystalTL.duration() - .5)
+                .to(lowerLeftShard, { duration: 1.5, yPercent: '40', xPercent: '-45', rotateZ: '-6deg' })
+                .to(lowerLeftShard, { duration: 1.5, yPercent: '50', xPercent: '-35', rotateZ: '-2deg' })
+                .to(lowerLeftShard, { duration: 1.5, yPercent: '30', xPercent: '-22', rotateZ: '3deg' })
+                .to(lowerLeftShard, { duration: 1.5, yPercent: '20', xPercent: '-30', rotateZ: '-5deg' })
+        };
+
+    }, [crystalTL, tls1, tls2, tls3, tls4, tls5])
 
 
     return (
-        <header className={styles.header}>
-            <Crystal className={styles.crystal} ref={crystalWrapper} />
+        <header className={styles.header} id="header">
+            <Crystal className={styles.crystal} ref={crystalRef} />
+            <div className={styles.hello_wrapper}>
+                <div className={styles.hello}>
+                    <div className={styles.overflow_wrapper}><p className={styles.line}>Bonjour</p></div>
+                    <div className={styles.overflow_wrapper}><p className={styles.line}>Je suis</p></div>
+                    <div className={styles.overflow_wrapper}><h1 className={styles.color} id='alban'><span></span><span>a</span><span>l</span><span>b</span><span>a</span><span>n</span></h1></div>
+                    <div className={styles.overflow_wrapper}><p className={styles.line}>développeur fullstack</p></div>
+                </div>
+            </div>
+            {/* <div className={styles.hello_v2}> */}
+            {/* <div className={styles.overflow_wrapper}><p className={styles.line}>cześć!</p></div>
+                <div className={styles.overflow_wrapper}><p className={styles.line}>jestem</p></div> */}
+            {/* <div className={styles.overflow_wrapper_v2}><h1 className={styles.color_v2}>vu<span>ka</span>in</h1></div> */}
+            {/* <div className={styles.overflow_wrapper}><p className={styles.line}>fullstack webdeveloper</p></div> */}
+            {/* </div> */}
+
         </header>
     );
 }
