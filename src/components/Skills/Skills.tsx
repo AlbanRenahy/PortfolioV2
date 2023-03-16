@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext, useState } from 'react';
 import gsap from 'gsap';
+import { clsx } from 'clsx';
 
 import styles from './Skills.module.sass';
 
 import SkillCard from './SkillCard/SkillCard';
+
+import { AppContext } from '../../store/AppContext';
 
 import { ReactComponent as FrontendIcon } from '../../media/icons/adjustments.svg';
 import { ReactComponent as BackendIcon } from '../../media/icons/tools-2.svg';
@@ -15,7 +18,15 @@ import { ReactComponent as CrystalMoving } from '../../media/crystal_scroll.svg'
 
 const Skills: React.FC = () => {
 
+    const { setCurrentSection } = useContext(AppContext);
+
     const crystalRef: React.MutableRefObject<null | SVGSVGElement> = useRef(null);
+
+    const frontendRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
+    const backendRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
+    const softskillsRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
+
+    const [activeCard, setActiveCard] = useState('');
 
     type CardData = Record<'frontend' | 'backend' | 'softskills', { category: string, skills: string[] }>;
 
@@ -33,7 +44,7 @@ const Skills: React.FC = () => {
 
             const [leftBottomShard, leftShard, rightBottomShard, topShard, rightShard, bottomShard] = ['left-bottom', 'left', 'right-bottom', 'top', 'right', 'bottom'].map((element) => (elementGetter(`[id="crystal_scroll_svg__${element}"]`)));
 
-            const floatingCrystal = gsap.timeline({
+            const floatingCrystalTL = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#motionPath",
                     toggleActions: 'restart pause reverse pause',
@@ -46,7 +57,7 @@ const Skills: React.FC = () => {
                 }
             });
 
-            floatingCrystal.to(crystal, {
+            floatingCrystalTL.to(crystal, {
                 ease: "none",
                 immediateRender: true,
                 motionPath: {
@@ -56,7 +67,6 @@ const Skills: React.FC = () => {
                     autoRotate: 90,
                 }
             });
-
 
             // const floatingShardAuto = gsap.timeline({ defaults: { ease: 'none', transformOrigin: 'center' }, repeat: -1, yoyo: true });
 
@@ -114,27 +124,72 @@ const Skills: React.FC = () => {
             });
 
             bottomShardTL.to(bottomShard, {
-
                 rotateZ: -6,
                 xPercent: 5,
                 yPercent: 24,
                 duration: 500
             });
 
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#skills',
+                    onEnter: () => { setCurrentSection('skills') },
+                    onEnterBack: () => { setCurrentSection('skills') },
+                    start: 'top center',
+                    end: 'bottom center'
+                }
+            });
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: frontendRef.current,
+                    onEnter: () => { setActiveCard('frontend') },
+                    onEnterBack: () => { setActiveCard('frontend') },
+                    onLeave: () => { setActiveCard('') },
+                    onLeaveBack: () => { setActiveCard('') },
+                    start: 'top center',
+                    end: 'bottom center'
+                }
+            });
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: backendRef.current,
+                    onEnter: () => { setActiveCard('backend') },
+                    onEnterBack: () => { setActiveCard('backend') },
+                    onLeave: () => { setActiveCard('') },
+                    onLeaveBack: () => { setActiveCard('') },
+                    start: 'top center',
+                    end: 'bottom center'
+                }
+            });
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: softskillsRef.current,
+                    onEnter: () => { setActiveCard('softskills') },
+                    onEnterBack: () => { setActiveCard('softskills') },
+                    onLeave: () => { setActiveCard('') },
+                    onLeaveBack: () => { setActiveCard('') },
+                    start: 'top center',
+                    end: 'bottom center'
+                }
+            });
         };
     }, [])
 
     return (
         <section className={styles.skills} id='skills'>
             <CrystalMoving className={styles.sliding_crystal} ref={crystalRef} />
-            <SkillCard data={cardData['frontend']}>
-                <FrontendIcon className={styles.icon_frontend} title="frontend icon" />
+
+            <SkillCard data={cardData['frontend']} activeCard={activeCard} ref={frontendRef}>
+                <FrontendIcon className={clsx(styles.icon, styles.icon_frontend)} title="frontend icon" />
             </SkillCard>
-            <SkillCard data={cardData['backend']}>
-                <BackendIcon className={styles.icon_backend} title="backend icon" />
+            <SkillCard data={cardData['backend']} activeCard={activeCard} ref={backendRef}>
+                <BackendIcon className={clsx(styles.icon, styles.icon_backend)} title="backend icon" />
             </SkillCard>
-            <SkillCard data={cardData['softskills']}>
-                <GraphicIcon className={styles.icon_softskills} title="softskills icon" />
+            <SkillCard data={cardData['softskills']} activeCard={activeCard} ref={softskillsRef}>
+                <GraphicIcon className={clsx(styles.icon, styles.icon_softskills)} title="softskills icon" />
             </SkillCard>
 
             <svg className={styles.path_svg} id="path-svg" width="400" height="400" version="1.1" viewBox="0 0 400 400" preserveAspectRatio='none' xmlns="http://www.w3.org/2000/svg">
